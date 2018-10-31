@@ -147,6 +147,37 @@ def breadthFirstSearch(problem):
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
+    from game import  Directions
+    from util import PriorityQueue
+    pq = PriorityQueue()
+    frontier = []
+    expanded = []
+
+    pq.push((problem.getStartState() , [] ), problem.getCostOfActions([]))
+    frontier.append(problem.getStartState())
+
+    while True:
+        if pq.isEmpty():
+            print "failure"
+            break
+        state , path = pq.pop()
+        frontier.remove(state)
+        if(problem.isGoalState(state)):
+            print "yes goal"
+            print path
+            return path
+        if state not in expanded:
+            expanded.append(state)
+            childs = problem.getSuccessors(state)
+            for s in childs:
+                if s[0] not in expanded and s not in frontier:
+                    pq.push((s[0] , path + [s[1]] ), problem.getCostOfActions(path + [s[1]]))
+                    frontier.append(s[0])
+                elif s in frontier :
+                    pq.update((s[0] , path + [s[1]] ), problem.getCostOfActions(path + [s[1]]))
+
+
+
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
@@ -159,7 +190,8 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
+
+
     util.raiseNotDefined()
 
 
