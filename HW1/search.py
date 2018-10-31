@@ -86,7 +86,75 @@ def depthFirstSearch(problem):
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
-    "*** YOUR CODE HERE ***"
+    from game import Directions
+    from util import Stack
+
+    print
+    "Start:", problem.getStartState()
+    print
+    "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    print
+    "Start's successors:", problem.getSuccessors(problem.getStartState())
+
+    stack = Stack()
+    solutionStack = Stack()
+
+    solution = []
+    expanded = []
+
+    for s in problem.getSuccessors(problem.getStartState()):
+        stack.push(s[0])
+        solutionStack.push(s[1])
+
+    expanded.append(problem.getStartState())
+
+    while True:
+        if stack.isEmpty():
+            print("Failure")
+            break
+        state = stack.pop()
+        path = solutionStack.pop()
+        if (problem.isGoalState(state)):
+            print("yes goal")
+            print
+            path
+            break
+        if state not in expanded:
+            print(state)
+            expanded.append(state)
+            childs = problem.getSuccessors(state)
+            for s in childs:
+                stack.push(s[0])
+                newPath = path + s[1]
+                solutionStack.push(newPath)
+                print
+                "successor for ", state, " : ", s[0]
+        else:
+            print
+            state, "is expanded"
+
+    s = Directions.SOUTH
+    w = Directions.WEST
+    e = Directions.EAST
+    n = Directions.NORTH
+    S = Directions.STOP
+
+    while len(path) > 0:
+        if path[0:4] == 'West':
+            solution.append(w)
+            path = path[4:]
+        elif path[0:4] == 'East':
+            solution.append(e)
+            path = path[4:]
+        elif path[0:5] == 'South':
+            solution.append(s)
+            path = path[5:]
+        elif path[0:5] == 'North':
+            solution.append(n)
+            path = path[5:]
+
+    print solution
+    return solution
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
